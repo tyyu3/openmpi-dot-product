@@ -44,11 +44,12 @@ std::vector<int> random_vec(std::uint64_t n, std::uniform_int_distribution<int>&
 {
     std::vector<int> res;
     res.resize(n);
-    for(std::size_t i = myid; i < n; i +=numprocs)
+    for(std::size_t i = 0; i < n; i += 1)
     {
         res[i] = uid(rng);
     }
     return res;
+
 }
 
 std::int64_t dot_product(const std::vector<int>& v1, const std::vector<int>&v2, std::uint64_t myid, size_t numprocs)
@@ -83,9 +84,12 @@ int main(int argc, char **argv)
   MPI_Get_processor_name(processor_name, &name_len);
   std::cout << "I'm #" << myid << " of " << numprocs <<" on " << processor_name << '\n';
 
-  auto v1 = random_vec(n, uid, rng, myid, numprocs);
-  auto v2 = random_vec(n, uid, rng, myid, numprocs);
-
+  std::vector<int> v1, v2;
+  if(myid == 0)
+  {
+    v1 = random_vec(n, uid, rng, myid, numprocs);
+    v2 = random_vec(n, uid, rng, myid, numprocs);
+  }
   /*for(auto i : v1)
   {
       std::cout<< i << std::endl;
