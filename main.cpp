@@ -125,7 +125,7 @@ int main(int argc, char **argv)
       time_end = std::chrono::high_resolution_clock::now();
       ticks_end = ticks();
       asm volatile("# mesurement end");
-
+      int iterations = 1;
       Timings result {
               .iterations = iterations,
               .ns =  static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(time_end - time_start).count()),
